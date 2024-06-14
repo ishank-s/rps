@@ -19,12 +19,11 @@ type GameState = {
 };
 type Optional<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>;
 
-
 type GameActions = {
   placeBet: (bet: Bet) => void;
   canPlaceBet: (bet: Optional<Bet, "id">) => boolean;
   playGame: () => void;
-  clearBet: ()=>void
+  clearBet: () => void;
 };
 
 export enum GAME_STAGE {
@@ -67,17 +66,31 @@ const useGameState = create<GameStore>((set, get) => ({
         losingBets.push(bet);
       }
     }
-    set((state) => ({
-      prevGames: [...state.prevGames, { bets: state.bets, aiMove }],
-      balance:
-        state.balance +
-        winningBets.reduce(
-          (accBetAmount, currentBet) => currentBet.amount + accBetAmount,
-          0
-        ),
-      winningBets: [...state.winningBets, ...winningBets],
-      losingBets: [...state.losingBets, ...losingBets],
-    }));
+
+    set((state) => {
+      let winningRate;
+      const uniqueBets = new Set(state.bets).size;
+      if (uniqueBets === 1) {
+        winningRate = 14;
+      } else {
+        winningRate = 3;
+      }
+      return {
+        balance:
+          state.balance +
+          winningBets.reduce(
+            (accBetAmount, currentBet) =>
+              currentBet.amount * winningRate + accBetAmount,
+            0
+          ),
+        prevGames: [
+          ...state.prevGames,
+          { bets: state.bets, aiMove, winningRate },
+        ],
+        winningBets: [...state.winningBets, ...winningBets],
+        losingBets: [...state.losingBets, ...losingBets],
+      };
+    });
     set(() => ({
       currentGameStage: GAME_STAGE.RESULT,
     }));
