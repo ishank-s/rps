@@ -1,9 +1,9 @@
 import { MOVE, MOVES_LIST } from "./consts";
 
 const PLAYOFF = [
-  [ 0, 1, -1],
-  [ -1, 0, 1],
-  [ 1, -1, 0],
+  [0, 1, -1],
+  [-1, 0, 1],
+  [1, -1, 0],
 ];
 
 export enum RESULT {
@@ -15,8 +15,8 @@ export enum RESULT {
 export const playRPS = (player1Choice: MOVE, player2Choice: MOVE) => {
   // Find the index of the player choices in the playoff matrix
   // Get the indices of the player choices
-  const player1Index = MOVES_LIST.findIndex((move)=>move === player1Choice);
-  const player2Index = MOVES_LIST.findIndex((move)=>move === player2Choice);
+  const player1Index = MOVES_LIST.findIndex((move) => move === player1Choice);
+  const player2Index = MOVES_LIST.findIndex((move) => move === player2Choice);
 
   // Check if either choice is invalid
   if (player1Index === -1 || player2Index === -1) {
@@ -38,7 +38,9 @@ export const playRPS = (player1Choice: MOVE, player2Choice: MOVE) => {
 
 export const generateAIMove = () => {
   const randomIndex = Math.floor(Math.random() * MOVES_LIST.length);
-  return MOVES_LIST[randomIndex];
+  return new Promise<MOVE>((resolve) => {
+    setTimeout(() => {
+      resolve(MOVES_LIST[randomIndex]);
+    }, 500);
+  });
 };
-
-

@@ -5,20 +5,33 @@ import { generateAIMove, playRPS, RESULT } from "../utils/game";
 export type Bet = {
   move: MOVE;
   amount: number;
+  id: string;
 };
 
 type GameState = {
   losingBets: Bet[];
   winningBets: Bet[];
   bets: Bet[];
+  currentGameStage: GAME_STAGE;
   prevGames: PrevGame[];
   balance: number;
+  lastAiMove?: MOVE;
 };
+type Optional<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>;
+
+
 type GameActions = {
   placeBet: (bet: Bet) => void;
-  canPlaceBet: (bet: Bet) => boolean;
+  canPlaceBet: (bet: Optional<Bet, "id">) => boolean;
   playGame: () => void;
+  clearBet: ()=>void
 };
+
+export enum GAME_STAGE {
+  BETTING = "BETTING",
+  PLAYING = "PLAYING",
+  RESULT = "RESULT",
+}
 
 type GameStore = GameState & GameActions;
 
@@ -33,10 +46,17 @@ const useGameState = create<GameStore>((set, get) => ({
   winningBets: [],
   losingBets: [],
   prevGames: [],
-  playGame: () => {
+  lastAiMove: undefined,
+  currentGameStage: GAME_STAGE.BETTING,
+  playGame: async () => {
     const state = get();
-    const aiMove = generateAIMove();
-    
+    set(() => ({
+      currentGameStage: GAME_STAGE.PLAYING,
+    }));
+    const aiMove = await generateAIMove();
+    set(() => ({
+      lastAiMove: aiMove,
+    }));
     const winningBets: Bet[] = [];
     const losingBets: Bet[] = [];
     for (const bet of state.bets) {
@@ -57,6 +77,13 @@ const useGameState = create<GameStore>((set, get) => ({
         ),
       winningBets: [...state.winningBets, ...winningBets],
       losingBets: [...state.losingBets, ...losingBets],
+    }));
+    set(() => ({
+      currentGameStage: GAME_STAGE.RESULT,
+    }));
+  },
+  clearBet: () => {
+    set(() => ({
       bets: [],
     }));
   },
@@ -77,7 +104,7 @@ const useGameState = create<GameStore>((set, get) => ({
   },
 }));
 
-const validateBet = (state: GameStore, bet: Bet) => {
+const validateBet = (state: GameStore, bet: Optional<Bet, "id">) => {
   if (state.balance < bet.amount) {
     return false;
   }
