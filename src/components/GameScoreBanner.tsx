@@ -5,13 +5,19 @@ const GameScoreBanner = () => {
   const winningBets = useGameState((state) => state.winningBets);
   const totalBet = useTotalBet();
   return (
-    <div className="flex">
-      <h3>Balance:</h3>
-      <label>{balance}</label>
-      <h3>Bet:</h3>
-      <label>{totalBet}</label>
-      <h3>Win:</h3>
-      <label>{winningBets.length}</label>
+    <div className="flex justify-center gap-16 bg-black w-full py-1">
+      <div className="flex">
+        <h3 className="text-primary">BALANCE:</h3>
+        <label>{balance}</label>
+      </div>
+      <div className="flex">
+        <h3 className="text-primary">BET:</h3>
+        <label>{totalBet}</label>
+      </div>
+      <div className="flex">
+        <h3 className="text-primary">WIN:</h3>
+        <label>{winningBets.length}</label>
+      </div>
     </div>
   );
 };

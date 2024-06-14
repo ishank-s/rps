@@ -9,7 +9,7 @@ const PlayingStageScreen = () => {
     <>
       {bets.map((bet) => {
         return (
-          <div>
+          <div key={bet.id}>
             {lastAiMove} VS {bet.move}
           </div>
         );
@@ -21,7 +21,7 @@ const VersusScreen = () => {
   const currentGameStage = useGameState((state) => state.currentGameStage);
   switch (currentGameStage) {
     case GAME_STAGE.BETTING:
-      return "PICK YOUR POSITIONS";
+      return <div className="flex justify-center">PICK YOUR POSITIONS</div>;
     case GAME_STAGE.PLAYING:
     case GAME_STAGE.RESULT:
       return <PlayingStageScreen />;

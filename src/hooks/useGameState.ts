@@ -39,14 +39,18 @@ type PrevGame = {
   aiMove: MOVE;
 };
 
+const initGameState = {
+  lastAiMove: undefined,
+  bets:[],
+  currentGameStage: GAME_STAGE.BETTING,
+}
+
 const useGameState = create<GameStore>((set, get) => ({
   balance: 5000,
-  bets: [],
   winningBets: [],
   losingBets: [],
   prevGames: [],
-  lastAiMove: undefined,
-  currentGameStage: GAME_STAGE.BETTING,
+  ...initGameState,
   playGame: async () => {
     const state = get();
     set(() => ({
@@ -96,21 +100,26 @@ const useGameState = create<GameStore>((set, get) => ({
     }));
   },
   clearBet: () => {
-    set(() => ({
-      bets: [],
-    }));
+    set(() => initGameState);
   },
   canPlaceBet: (bet) => {
     const state = get();
     return validateBet(state, bet);
   },
-  placeBet: (bet: Bet) => {
+  placeBet: (currentBet: Bet) => {
     const state = get();
-    validateBet(state, bet);
+    validateBet(state, currentBet);
     set((state) => {
+      const newBets = Array.from(state.bets)
+      const sameMoveBet = newBets.find((bet)=> bet.move === currentBet.move)
+      if(sameMoveBet){
+        sameMoveBet.amount+=currentBet.amount
+      }else{
+        newBets.push(currentBet)
+      }
       const newState = {
-        balance: (state.balance -= bet.amount),
-        bets: [...state.bets, bet],
+        balance: (state.balance -= currentBet.amount),
+        bets: newBets,
       };
       return newState;
     });
