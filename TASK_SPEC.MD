@@ -16,10 +16,10 @@ The app is a scissors, rock, paper game, with the ability to bet on the winning 
 - The bet is reduced from the balance.
 - When betting done button is clicked, the computer runs a random paper, scissors,
 rock match.
-- Player choice should be compared to computers choice and only one bet can win –
-every tie counts as loss
+- Player choice should be compared to computers choice and only one bet can win 
 - If player bets on one of them and wins, the return is 14 times the bet.
 - If player bets on two of them and wins the return is 3 times the bet.
+- every tie counts as loss
 - Loss bets are not returned to player
 - Bets with tie result are returned to player
 - After round ends the return adds to the balance
@@ -40,8 +40,3 @@ We pay attention to everything mentioned for Junior (optional part is mandatory 
 We pay attention to everything mentioned for middle. Additionally we expect code to be flexible and maintainable. Changing of requirements should not lead to rewriting half of application. Changing of specifications should cause minimal changes.
 
 
-
-
-Questions  -
-UI
-    Can i reduce the bet on something
