@@ -1,11 +1,12 @@
-import useGameState, { useTotalBet } from "../hooks/useGameState";
+import { useTotalBet, useTotalWin } from "../hooks/gameState/selectors";
+import useGameState from "../hooks/gameState/useGameState";
 
 const GameScoreBanner = () => {
   const balance = useGameState((state) => state.balance);
-  const winningBets = useGameState((state) => state.winningBets);
+  const totalWin = useTotalWin();
   const totalBet = useTotalBet();
   return (
-    <div className="flex justify-center gap-16 bg-black w-full py-1">
+    <div className="flex justify-center gap-16 bg-black w-full py-1 text-white">
       <div className="flex">
         <h3 className="text-primary">BALANCE:</h3>
         <label>{balance}</label>
@@ -16,7 +17,7 @@ const GameScoreBanner = () => {
       </div>
       <div className="flex">
         <h3 className="text-primary">WIN:</h3>
-        <label>{winningBets.length}</label>
+        <label>{totalWin > 0 ? totalWin : 0}</label>
       </div>
     </div>
   );

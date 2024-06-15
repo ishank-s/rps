@@ -1,5 +1,5 @@
 import { nanoid } from "nanoid";
-import useGameState from "../hooks/useGameState";
+import useGameState, { GAME_STAGE } from "../hooks/gameState/useGameState";
 import { BET_UNIT_SIZE, MOVE, MOVES_LIST } from "../utils/consts";
 const MoveColors = {
   [MOVE.ROCK]: "blue",
@@ -23,16 +23,18 @@ const BetButtons = () => {
   const placeBet = useGameState((state) => state.placeBet);
   const canPlaceBet = useGameState((state) => state.canPlaceBet);
   const bets = useGameState((state) => state.bets);
+  const currentGameStage = useGameState((state) => state.currentGameStage);
+
 
   return (
     <div className="flex flex-row justify-center gap-4">
       {MOVES_LIST.map((move) => {
-        const betDisabled = !canPlaceBet({ move, amount: BET_UNIT_SIZE });
+        const betDisabled = currentGameStage !== GAME_STAGE.BETTING || !canPlaceBet({ move, amount: BET_UNIT_SIZE });
         const betWithCurrentMove = bets.find((bet) => bet.move === move);
         const classes = colorClassMap[move];
         return (
           <button
-            className={`h-36 w-36 border-solid border-2 font-bold ${classes.border} ${classes.bg}`}
+            className={`h-28 w-36 border-solid border-2 font-bold ${classes.border} ${classes.bg}`}
             key={move}
             disabled={betDisabled}
             onClick={() => {
@@ -43,7 +45,7 @@ const BetButtons = () => {
               <div
                 className={`${
                   !betWithCurrentMove?.amount && `opacity-0`
-                } flex items-center justify-center rounded-full bg-white h-10 w-10 m-auto border-solid border-4 ${
+                } flex items-center justify-center rounded-full bg-white h-12 w-12 m-auto border-solid border-4 ${
                   classes.border
                 } text-black`}
               >

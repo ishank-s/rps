@@ -4,6 +4,8 @@ export enum MOVE {
     PAPER = "PAPER",
     SCISSORS = "SCISSORS",
   }
+
+  export const INITIAL_BALANCE = 5000
   
   export const MOVES_LIST = Object.values(MOVE)
   

@@ -1,6 +1,11 @@
 import { create } from "zustand";
-import { BET_UNIT_SIZE, MOVE, MOVES_LIST } from "../utils/consts";
-import { generateAIMove, playRPS, RESULT } from "../utils/game";
+import {
+  INITIAL_BALANCE,
+  MOVE,
+  MOVES_LIST,
+} from "../../utils/consts";
+import { generateAIMove, playRPS, RESULT } from "../../utils/game";
+import { Optional } from "../../utils/types";
 
 export type Bet = {
   move: MOVE;
@@ -11,13 +16,13 @@ export type Bet = {
 type GameState = {
   losingBets: Bet[];
   winningBets: Bet[];
+  tieBets: Bet[];
   bets: Bet[];
   currentGameStage: GAME_STAGE;
-  prevGames: PrevGame[];
+  prevGames: SavedGame[];
   balance: number;
   lastAiMove?: MOVE;
 };
-type Optional<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>;
 
 type GameActions = {
   placeBet: (bet: Bet) => void;
@@ -34,21 +39,25 @@ export enum GAME_STAGE {
 
 type GameStore = GameState & GameActions;
 
-type PrevGame = {
+export type SavedGame = {
   bets: Bet[];
   aiMove: MOVE;
+  winningBets: Bet[];
+  losingBets: Bet[];
+  tieBets: Bet[];
 };
 
 const initGameState = {
   lastAiMove: undefined,
-  bets:[],
+  bets: [],
   currentGameStage: GAME_STAGE.BETTING,
-}
+};
 
 const useGameState = create<GameStore>((set, get) => ({
-  balance: 5000,
+  balance: INITIAL_BALANCE,
   winningBets: [],
   losingBets: [],
+  tieBets: [],
   prevGames: [],
   ...initGameState,
   playGame: async () => {
@@ -62,10 +71,17 @@ const useGameState = create<GameStore>((set, get) => ({
     }));
     const winningBets: Bet[] = [];
     const losingBets: Bet[] = [];
+    const tieBets: Bet[] = [];
     for (const bet of state.bets) {
       const result = playRPS(bet.move, aiMove);
       if (result === RESULT.WIN) {
         winningBets.push(bet);
+      } else if (result === RESULT.TIE) {
+        if (state.bets.length === 1) {
+          tieBets.push(bet);
+        } else {
+          losingBets.push(bet);
+        }
       } else {
         losingBets.push(bet);
       }
@@ -86,13 +102,18 @@ const useGameState = create<GameStore>((set, get) => ({
             (accBetAmount, currentBet) =>
               currentBet.amount * winningRate + accBetAmount,
             0
+          ) +
+          tieBets.reduce(
+            (accBetAmount, currentBet) => currentBet.amount + accBetAmount,
+            0
           ),
         prevGames: [
           ...state.prevGames,
-          { bets: state.bets, aiMove, winningRate },
+          { bets: state.bets, aiMove, winningRate, winningBets, losingBets,tieBets },
         ],
         winningBets: [...state.winningBets, ...winningBets],
         losingBets: [...state.losingBets, ...losingBets],
+        tieBets: [...state.tieBets, ...tieBets],
       };
     });
     set(() => ({
@@ -110,12 +131,12 @@ const useGameState = create<GameStore>((set, get) => ({
     const state = get();
     validateBet(state, currentBet);
     set((state) => {
-      const newBets = Array.from(state.bets)
-      const sameMoveBet = newBets.find((bet)=> bet.move === currentBet.move)
-      if(sameMoveBet){
-        sameMoveBet.amount+=currentBet.amount
-      }else{
-        newBets.push(currentBet)
+      const newBets = Array.from(state.bets);
+      const sameMoveBet = newBets.find((bet) => bet.move === currentBet.move);
+      if (sameMoveBet) {
+        sameMoveBet.amount += currentBet.amount;
+      } else {
+        newBets.push(currentBet);
       }
       const newState = {
         balance: (state.balance -= currentBet.amount),
@@ -139,23 +160,3 @@ const validateBet = (state: GameStore, bet: Optional<Bet, "id">) => {
 };
 
 export default useGameState;
-
-export const useRockBets = () =>
-  useGameState((state) => {
-    return state.balance >= BET_UNIT_SIZE;
-  });
-
-export const useTotalBet = () =>
-  useGameState((state) => {
-    return state.bets.reduce(
-      (accBetAmount, currBet) => accBetAmount + currBet.amount,
-      0
-    );
-  });
-
-export const useBetMoves = () =>
-  useGameState((state) => {
-    const allMoves = [...state.bets.map(({ move }) => move)];
-    const uniqueMoves = new Set(allMoves);
-    return [...uniqueMoves];
-  });

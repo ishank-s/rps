@@ -1,4 +1,4 @@
-import useGameState, { GAME_STAGE } from "../hooks/useGameState";
+import useGameState, { GAME_STAGE } from "../hooks/gameState/useGameState";
 
 const GameButton = () => {
   const playGame = useGameState((state) => state.playGame);
