@@ -23,7 +23,7 @@ const PlayingStageScreen = () => {
       </div>
     );
   }
-  const bet = getBetToDisplay(lastGame);
+  const bet = lastGame && getBetToDisplay(lastGame);
   if (!bet) {
     return <></>;
   }

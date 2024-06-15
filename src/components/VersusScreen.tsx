@@ -1,4 +1,5 @@
-import useGameState, {  GAME_STAGE } from "../hooks/gameState/useGameState";
+import useGameState, { GAME_STAGE } from "../hooks/gameState/useGameState";
+import GameResult from "./GameResult";
 import PlayingStageScreen from "./PlayingStageScreen";
 
 const VersusScreen = () => {
@@ -10,8 +11,10 @@ const VersusScreen = () => {
           PICK YOUR POSITIONS
         </div>
       );
+      case GAME_STAGE.RESULT:
+        return <GameResult />;
+      case GAME_STAGE.MATCHUP:
     case GAME_STAGE.PLAYING:
-    case GAME_STAGE.RESULT:
       return <PlayingStageScreen />;
   }
 };

@@ -35,7 +35,15 @@ export const generateAIMove = () => {
   const randomIndex = Math.floor(Math.random() * MOVES_LIST.length);
   return new Promise<MOVE>((resolve) => {
     setTimeout(() => {
+      // resolve(MOVE.SCISSORS);
       resolve(MOVES_LIST[randomIndex]);
     }, 500);
   });
 };
+
+
+export const wait = (timeout:number)=>{
+  return new Promise<void>((resolve)=>{
+    setTimeout(()=>resolve(),timeout)
+  })
+}

@@ -4,7 +4,7 @@ import {
   MOVE,
   MOVES_LIST,
 } from "../../utils/consts";
-import { generateAIMove, playRPS, RESULT } from "../../utils/game";
+import { generateAIMove, playRPS, RESULT, wait } from "../../utils/game";
 import { Optional } from "../../utils/types";
 
 export type Bet = {
@@ -34,6 +34,7 @@ type GameActions = {
 export enum GAME_STAGE {
   BETTING = "BETTING",
   PLAYING = "PLAYING",
+  MATCHUP = "MATCHUP",
   RESULT = "RESULT",
 }
 
@@ -114,11 +115,13 @@ const useGameState = create<GameStore>((set, get) => ({
         winningBets: [...state.winningBets, ...winningBets],
         losingBets: [...state.losingBets, ...losingBets],
         tieBets: [...state.tieBets, ...tieBets],
+        currentGameStage: GAME_STAGE.MATCHUP,
       };
     });
-    set(() => ({
+    await wait(1000)
+    set(()=>({
       currentGameStage: GAME_STAGE.RESULT,
-    }));
+    }))
   },
   clearBet: () => {
     set(() => initGameState);
