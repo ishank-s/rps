@@ -9,7 +9,7 @@ const GameButton = () => {
     case GAME_STAGE.RESULT:
       return (
         <button
-          className="h-16 w-40 bg-black text-primary border-primary border-solid border-2 rounded-full font-bold"
+          className="h-20 w-48 bg-black text-primary border-primary border-solid border-2 rounded-full font-bold"
           onClick={() => {
             clearBet();
           }}
@@ -21,7 +21,7 @@ const GameButton = () => {
     default:
       return (
         <button tabIndex={0}
-          className="h-16 w-40 bg-black text-primary border-primary border-solid border-2 rounded-full font-bold"
+          className="h-20 w-48 bg-black text-primary border-primary border-solid border-2 rounded-full font-bold"
           disabled={!bets.length}
           onClick={() => {
             playGame();

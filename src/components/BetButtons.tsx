@@ -35,7 +35,7 @@ const BetButtons = () => {
         const classes = colorClassMap[move];
         return (
           <button
-            className={`h-28 w-36 border-solid border-2 font-bold ${classes.border} ${classes.bg}`}
+            className={`h-44 w-56 border-solid border-2 font-bold ${classes.border} ${classes.bg}`}
             key={move}
             disabled={betDisabled}
             onClick={() => {
