@@ -20,7 +20,7 @@ const GameButton = () => {
     case GAME_STAGE.BETTING:
     default:
       return (
-        <button
+        <button tabIndex={0}
           className="h-16 w-40 bg-black text-primary border-primary border-solid border-2 rounded-full font-bold"
           disabled={!bets.length}
           onClick={() => {

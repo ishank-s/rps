@@ -43,6 +43,7 @@ const BetButtons = () => {
           >
             <div className="flex flex-col gap-3">
               <div
+                aria-label={`${betWithCurrentMove?.amount || "nothing"} on`}
                 className={`${
                   !betWithCurrentMove?.amount && `opacity-0`
                 } flex items-center justify-center rounded-full bg-white h-12 w-12 m-auto border-solid border-4 ${
