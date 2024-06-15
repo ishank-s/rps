@@ -1,10 +1,11 @@
 import { create } from "zustand";
+import { INITIAL_BALANCE, MOVE } from "../../utils/game/consts";
 import {
-  INITIAL_BALANCE,
-  MOVE,
-  MOVES_LIST,
-} from "../../utils/consts";
-import { generateAIMove, playRPS, RESULT, wait } from "../../utils/game";
+  computeResults,
+  generateAIMove,
+  validateBet,
+  wait,
+} from "../../utils/game/game";
 import { Optional } from "../../utils/types";
 
 export type Bet = {
@@ -38,7 +39,7 @@ export enum GAME_STAGE {
   RESULT = "RESULT",
 }
 
-type GameStore = GameState & GameActions;
+export type GameStore = GameState & GameActions;
 
 export type SavedGame = {
   bets: Bet[];
@@ -70,23 +71,10 @@ const useGameState = create<GameStore>((set, get) => ({
     set(() => ({
       lastAiMove: aiMove,
     }));
-    const winningBets: Bet[] = [];
-    const losingBets: Bet[] = [];
-    const tieBets: Bet[] = [];
-    for (const bet of state.bets) {
-      const result = playRPS(bet.move, aiMove);
-      if (result === RESULT.WIN) {
-        winningBets.push(bet);
-      } else if (result === RESULT.TIE) {
-        if (state.bets.length === 1) {
-          tieBets.push(bet);
-        } else {
-          losingBets.push(bet);
-        }
-      } else {
-        losingBets.push(bet);
-      }
-    }
+    const { winningBets, losingBets, tieBets } = computeResults(
+      state.bets,
+      aiMove
+    );
 
     set((state) => {
       let winningRate;
@@ -110,7 +98,14 @@ const useGameState = create<GameStore>((set, get) => ({
           ),
         prevGames: [
           ...state.prevGames,
-          { bets: state.bets, aiMove, winningRate, winningBets, losingBets,tieBets },
+          {
+            bets: state.bets,
+            aiMove,
+            winningRate,
+            winningBets,
+            losingBets,
+            tieBets,
+          },
         ],
         winningBets: [...state.winningBets, ...winningBets],
         losingBets: [...state.losingBets, ...losingBets],
@@ -118,10 +113,10 @@ const useGameState = create<GameStore>((set, get) => ({
         currentGameStage: GAME_STAGE.MATCHUP,
       };
     });
-    await wait(1000)
-    set(()=>({
+    await wait(1000);
+    set(() => ({
       currentGameStage: GAME_STAGE.RESULT,
-    }))
+    }));
   },
   clearBet: () => {
     set(() => initGameState);
@@ -149,17 +144,5 @@ const useGameState = create<GameStore>((set, get) => ({
     });
   },
 }));
-
-const validateBet = (state: GameStore, bet: Optional<Bet, "id">) => {
-  if (state.balance < bet.amount) {
-    return false;
-  }
-  const allMoves = [...state.bets.map(({ move }) => move), bet.move];
-  const uniqueMoves = new Set(allMoves);
-  if (MOVES_LIST.length === uniqueMoves.size) {
-    return false;
-  }
-  return true;
-};
 
 export default useGameState;

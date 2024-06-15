@@ -1,4 +1,4 @@
-import { INITIAL_BALANCE } from "../../utils/consts";
+import { INITIAL_BALANCE } from "../../utils/game/consts";
 import useGameState from "./useGameState";
 
 export const useTotalBet = () =>

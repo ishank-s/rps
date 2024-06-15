@@ -1,4 +1,4 @@
-import { useLastGame } from "../hooks/gameState/selectors";
+import { useLastGame } from "../hooks/game/selectors";
 
 const GameResult = () => {
     const lastGame = useLastGame();

@@ -1,6 +1,6 @@
 import { nanoid } from "nanoid";
-import useGameState, { GAME_STAGE } from "../hooks/gameState/useGameState";
-import { BET_UNIT_SIZE, MOVE, MOVES_LIST } from "../utils/consts";
+import useGameState, { GAME_STAGE } from "../hooks/game/useGameState";
+import { BET_UNIT_SIZE, MOVE, MOVES_LIST } from "../utils/game/consts";
 
 const MoveColors = {
   [MOVE.ROCK]: "blue",
