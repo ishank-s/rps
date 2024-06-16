@@ -13,9 +13,6 @@
   user-select: none;
   
 }
-#root{
-  background: url('/rock_paper_scissors_1.png');
-}
 a {
   font-weight: 500;
   text-decoration: inherit;
