@@ -47,6 +47,7 @@ export type SavedGame = {
   winningBets: Bet[];
   losingBets: Bet[];
   tieBets: Bet[];
+  winningMove?: MOVE;
 };
 
 const initGameState = {
@@ -71,7 +72,7 @@ const useGameState = create<GameStore>((set, get) => ({
     set(() => ({
       lastAiMove: aiMove,
     }));
-    const { winningBets, losingBets, tieBets } = computeResults(
+    const { winningBets, losingBets, tieBets, winningMove } = computeResults(
       state.bets,
       aiMove
     );
@@ -105,6 +106,7 @@ const useGameState = create<GameStore>((set, get) => ({
             winningBets,
             losingBets,
             tieBets,
+            winningMove: winningMove,
           },
         ],
         winningBets: [...state.winningBets, ...winningBets],

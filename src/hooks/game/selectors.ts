@@ -1,5 +1,5 @@
 import { INITIAL_BALANCE } from "../../utils/game/consts";
-import useGameState from "./useGameState";
+import useGameState, { SavedGame } from "./useGameState";
 
 export const useTotalBet = () =>
   useGameState((state) => {
@@ -19,5 +19,5 @@ export const useBetMoves = () =>
 export const useTotalWin = () =>
   useGameState((state) => state.balance - INITIAL_BALANCE);
 
-export const useLastGame = () =>
+export const useLastGame : ()=>SavedGame | undefined= () =>
   useGameState((state) => state.prevGames[state.prevGames.length - 1]);

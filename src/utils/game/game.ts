@@ -64,19 +64,23 @@ export const computeResults = (bets: Bet[], aiMove: MOVE) => {
   const winningBets: Bet[] = [];
   const losingBets: Bet[] = [];
   const tieBets: Bet[] = [];
+  let winningMove:MOVE|undefined;
   for (const bet of bets) {
     const result = playRPS(bet.move, aiMove);
     if (result === RESULT.WIN) {
       winningBets.push(bet);
+      winningMove = bet.move
     } else if (result === RESULT.TIE) {
       if (bets.length === 1) {
         tieBets.push(bet);
       } else {
         losingBets.push(bet);
       }
+      winningMove = aiMove
     } else {
       losingBets.push(bet);
+      winningMove = aiMove
     }
   }
-  return { winningBets, losingBets, tieBets };
+  return { winningBets, losingBets, tieBets ,winningMove};
 };
