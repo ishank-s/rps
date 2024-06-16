@@ -13,8 +13,8 @@ const colorClassMap = MOVES_LIST.reduce<
 >((colorClassMap, move) => {
   const classes = {
     bg: `bg-${MoveColors[move]}-950`,
-    border: `border-${MoveColors[move]}-300`,
-    color: `text-${MoveColors[move]}-300`,
+    border: `border-${MoveColors[move]}-600`,
+    color: `text-${MoveColors[move]}-600`,
   };
   colorClassMap[move] = classes;
   return colorClassMap;
@@ -53,7 +53,7 @@ const BetButtons = () => {
               >
                 {betWithCurrentMove?.amount}
               </div>
-              <div className={`${classes.color}`}>{move}</div>
+              <div className={`text-2xl ${classes.color}`}>{move}</div>
             </div>
           </button>
         );

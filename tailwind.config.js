@@ -9,10 +9,10 @@ export default {
       pattern: /bg-(red|green|blue)-950+/, 
     },
     {
-      pattern: /border-(red|green|blue)-300+/, 
+      pattern: /border-(red|green|blue)-600+/, 
     },
     {
-      pattern: /text-(red|green|blue)-300+/, 
+      pattern: /text-(red|green|blue)-600+/, 
     },
   ],
   theme: {
