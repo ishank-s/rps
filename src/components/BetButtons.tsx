@@ -34,7 +34,7 @@ const BetButtons = () => {
         const betDisabled = currentGameStage !== GAME_STAGE.BETTING || !canPlaceBet({ move, amount: BET_UNIT_SIZE });
         const betWithCurrentMove = bets.find((bet) => bet.move === move);
         const classes = colorClassMap[move];
-        const isWinningMove = winningMove === move 
+        const isWinningMove = winningMove === move && currentGameStage !== GAME_STAGE.BETTING
         return (
           <button
             className={`h-44 w-56 border-solid ${isWinningMove ? 'border-[6px]' : 'border-2'} font-bold ${classes.border} ${classes.bg}`}

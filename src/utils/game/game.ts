@@ -76,12 +76,14 @@ export const computeResults = (bets: Bet[], aiMove: MOVE) => {
       } else {
         losingBets.push(bet);
       }
-if(!winningMove){
+if(!winningMove && bets.length===1){
       winningMove = aiMove
 }
     } else {
       losingBets.push(bet);
+if(!winningMove){
       winningMove = aiMove
+}
     }
   }
   return { winningBets, losingBets, tieBets ,winningMove};
