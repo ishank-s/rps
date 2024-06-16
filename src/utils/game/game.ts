@@ -76,7 +76,9 @@ export const computeResults = (bets: Bet[], aiMove: MOVE) => {
       } else {
         losingBets.push(bet);
       }
+if(!winningMove){
       winningMove = aiMove
+}
     } else {
       losingBets.push(bet);
       winningMove = aiMove
