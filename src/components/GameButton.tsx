@@ -21,7 +21,7 @@ const GameButton = () => {
     default:
       return (
         <button tabIndex={0}
-          className="h-20 w-48 bg-black text-primary border-primary border-solid border-2 rounded-full font-bold"
+          className="h-20 w-48 bg-black text-primary border-primary border-solid border-2 rounded-full font-bold text-2xl"
           disabled={!bets.length}
           onClick={() => {
             playGame();
