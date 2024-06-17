@@ -13,11 +13,6 @@
   user-select: none;
   
 }
-a {
-  font-weight: 500;
-  text-decoration: inherit;
-}
-
 
 #root {
   height: 100dvh;
