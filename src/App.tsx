@@ -6,7 +6,7 @@ import VersusScreen from "./components/game/VersusScreen";
 
 function App() {
   return (
-    <div className="flex flex-col h-full items-center bg-gradient-to-b from-[#484848] from-40%  via-[#2d2d2d] via-60% to-[#1d1d1d]">
+    <div className="flex flex-col h-full items-center bg-gradient-to-b from-[#484848] from-40%  via-[#2d2d2d] via-80% to-[#1d1d1d]">
       <GameScoreBanner />
       <div className="h-40 mt-40 flex">
       <VersusScreen />
