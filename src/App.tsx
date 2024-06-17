@@ -1,8 +1,8 @@
 import "./App.css";
-import BetButtons from "./components/BetButtons";
-import GameButton from "./components/GameButton";
-import GameScoreBanner from "./components/GameScoreBanner";
-import VersusScreen from "./components/VersusScreen";
+import BetButtons from "./components/game/BetButtons";
+import GameButton from "./components/game/GameButton";
+import GameScoreBanner from "./components/game/GameScoreBanner";
+import VersusScreen from "./components/game/VersusScreen";
 
 function App() {
   return (

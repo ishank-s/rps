@@ -1,10 +1,10 @@
-import { useLastGame } from "../hooks/game/selectors";
+import { useLastGame } from "../../hooks/game/selectors";
 
 const GameResult = () => {
   const lastGame = useLastGame();
   if (!lastGame) return <></>;
-  const { winningBets, losingBets, tieBets, winningAmount } = lastGame;
 
+  const { winningBets, losingBets, tieBets, winningAmount } = lastGame;
   if (winningBets.length) {
     const { move } = winningBets[0] || {};
     return (

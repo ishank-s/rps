@@ -1,9 +1,9 @@
-import useGameState, { GAME_STAGE } from "../hooks/game/useGameState";
+import useGameState, { GAME_STAGE } from "../../hooks/game/useGameState";
 
 const GameButton = () => {
   const playGame = useGameState((state) => state.playGame);
   const clearBet = useGameState((state) => state.clearBet);
-  const bets = useGameState((state)=> state.bets)
+  const bets = useGameState((state) => state.bets);
   const currentGameStage = useGameState((state) => state.currentGameStage);
   switch (currentGameStage) {
     case GAME_STAGE.RESULT:
@@ -20,7 +20,8 @@ const GameButton = () => {
     case GAME_STAGE.BETTING:
     default:
       return (
-        <button tabIndex={0}
+        <button
+          tabIndex={0}
           className="h-20 w-48 bg-black text-primary border-primary border-solid border-2 rounded-full font-bold text-2xl"
           disabled={!bets.length}
           onClick={() => {

@@ -1,5 +1,5 @@
-import { useLastGame } from "../hooks/game/selectors";
-import useGameState, { SavedGame } from "../hooks/game/useGameState";
+import { useLastGame } from "../../hooks/game/selectors";
+import useGameState, { SavedGame } from "../../hooks/game/useGameState";
 
 const getBetToDisplay = (lastGame: SavedGame) => {
   const { winningBets, tieBets, losingBets,aiMove } = lastGame;

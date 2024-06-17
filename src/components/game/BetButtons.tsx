@@ -1,7 +1,7 @@
 import { nanoid } from "nanoid";
-import useGameState, { GAME_STAGE } from "../hooks/game/useGameState";
-import { BET_UNIT_SIZE, MOVE, MOVES_LIST } from "../utils/game/consts";
-import { useLastGame } from "../hooks/game/selectors";
+import useGameState, { GAME_STAGE } from "../../hooks/game/useGameState";
+import { BET_UNIT_SIZE, MOVE, MOVES_LIST } from "../../utils/game/consts";
+import { useLastGame } from "../../hooks/game/selectors";
 
 const MoveColors = {
   [MOVE.ROCK]: "blue",
@@ -26,18 +26,23 @@ const BetButtons = () => {
   const canPlaceBet = useGameState((state) => state.canPlaceBet);
   const bets = useGameState((state) => state.bets);
   const currentGameStage = useGameState((state) => state.currentGameStage);
-  const {winningMove } = useLastGame() || {};
+  const { winningMove } = useLastGame() || {};
 
   return (
     <div className="flex flex-row justify-center gap-4">
       {MOVES_LIST.map((move) => {
-        const betDisabled = currentGameStage !== GAME_STAGE.BETTING || !canPlaceBet({ move, amount: BET_UNIT_SIZE });
+        const betDisabled =
+          currentGameStage !== GAME_STAGE.BETTING ||
+          !canPlaceBet({ move, amount: BET_UNIT_SIZE });
         const betWithCurrentMove = bets.find((bet) => bet.move === move);
         const classes = colorClassMap[move];
-        const isWinningMove = winningMove === move && currentGameStage !== GAME_STAGE.BETTING
+        const isWinningMove =
+          winningMove === move && currentGameStage !== GAME_STAGE.BETTING;
         return (
           <button
-            className={`h-44 w-56 border-solid ${isWinningMove ? 'border-[6px]' : 'border-2'} font-bold ${classes.border} ${classes.bg}`}
+            className={`h-44 w-56 border-solid ${
+              isWinningMove ? "border-[6px]" : "border-2"
+            } font-bold ${classes.border} ${classes.bg}`}
             key={move}
             disabled={betDisabled}
             onClick={() => {

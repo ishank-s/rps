@@ -19,5 +19,5 @@ export const useBetMoves = () =>
 export const useTotalWin = () =>
   useGameState((state) => state.balance - INITIAL_BALANCE);
 
-export const useLastGame : ()=>SavedGame | undefined= () =>
+export const useLastGame: () => SavedGame | undefined = () =>
   useGameState((state) => state.prevGames[state.prevGames.length - 1]);

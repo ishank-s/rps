@@ -1,4 +1,4 @@
-import useGameState, { GAME_STAGE } from "../hooks/game/useGameState";
+import useGameState, { GAME_STAGE } from "../../hooks/game/useGameState";
 import GameResult from "./GameResult";
 import PlayingStageScreen from "./PlayingStageScreen";
 

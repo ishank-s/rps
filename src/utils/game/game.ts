@@ -1,6 +1,7 @@
 import { Bet, GameStore } from "../../hooks/game/useGameState";
-import { MOVE, MOVES_LIST } from "./consts";
+import { DOUBLE_WINNING_RATE, MOVE, MOVES_LIST, SINGLE_WINNING_RATE } from "./consts";
 import { Optional } from "../types";
+
 
 const PLAYOFF = [
   [0, 1, -1],
@@ -60,48 +61,54 @@ export const validateBet = (state: GameStore, bet: Optional<Bet, "id">) => {
   return true;
 };
 
-const getWinningRate = (bets:Bet[])=>{
+const getWinningRate = (bets: Bet[]) => {
   let winningRate;
-      const uniqueBets = new Set(bets).size;
-      if (uniqueBets === 1) {
-        winningRate = 14;
-      } else {
-        winningRate = 3;
-      }
-      return winningRate
-}
+  const uniqueBets = new Set(bets).size;
+  if (uniqueBets === 1) {
+    winningRate = SINGLE_WINNING_RATE;
+  } else {
+    winningRate = DOUBLE_WINNING_RATE;
+  }
+  return winningRate;
+};
 
 export const computeResults = (bets: Bet[], aiMove: MOVE) => {
   const winningBets: Bet[] = [];
   const losingBets: Bet[] = [];
   const tieBets: Bet[] = [];
-  let winningMove:MOVE|undefined;
-  let winningAmount = 0
-  let betAmount = 0
-  const winningRate = getWinningRate(bets)
+  let winningMove: MOVE | undefined;
+  let winningAmount = 0;
+  let betAmount = 0;
+  const winningRate = getWinningRate(bets);
   for (const bet of bets) {
     const result = playRPS(bet.move, aiMove);
-    betAmount +=bet.amount
+    betAmount += bet.amount;
     if (result === RESULT.WIN) {
       winningBets.push(bet);
-      winningMove = bet.move
-      winningAmount = bet.amount * winningRate
+      winningMove = bet.move;
+      winningAmount = bet.amount * winningRate;
     } else if (result === RESULT.TIE) {
       if (bets.length === 1) {
         tieBets.push(bet);
-        betAmount -= bet.amount
+        betAmount -= bet.amount;
       } else {
         losingBets.push(bet);
       }
-if(!winningMove && bets.length===1){
-      winningMove = aiMove
-}
+      if (!winningMove && bets.length === 1) {
+        winningMove = aiMove;
+      }
     } else {
       losingBets.push(bet);
-if(!winningMove){
-      winningMove = aiMove
-}
+      if (!winningMove) {
+        winningMove = aiMove;
+      }
     }
   }
-  return { winningBets, losingBets, tieBets ,winningMove,winningAmount:winningAmount - betAmount};
+  return {
+    winningBets,
+    losingBets,
+    tieBets,
+    winningMove,
+    winningAmount: winningAmount - betAmount,
+  };
 };

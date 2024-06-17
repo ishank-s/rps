@@ -1,5 +1,5 @@
-import { useTotalBet, useTotalWin } from "../hooks/game/selectors";
-import useGameState from "../hooks/game/useGameState";
+import { useTotalBet, useTotalWin } from "../../hooks/game/selectors";
+import useGameState from "../../hooks/game/useGameState";
 
 const GameScoreBanner = () => {
   const balance = useGameState((state) => state.balance);
