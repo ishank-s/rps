@@ -78,7 +78,7 @@ const useGameState = create<GameStore>((set, get) => ({
 
     set((state) => {
       return {
-        balance: state.balance + winningAmount,
+        balance: state.balance + (winningAmount > 0 ? winningAmount : 0),
         prevGames: [
           ...state.prevGames,
           {
