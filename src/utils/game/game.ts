@@ -60,19 +60,36 @@ export const validateBet = (state: GameStore, bet: Optional<Bet, "id">) => {
   return true;
 };
 
+const getWinningRate = (bets:Bet[])=>{
+  let winningRate;
+      const uniqueBets = new Set(bets).size;
+      if (uniqueBets === 1) {
+        winningRate = 14;
+      } else {
+        winningRate = 3;
+      }
+      return winningRate
+}
+
 export const computeResults = (bets: Bet[], aiMove: MOVE) => {
   const winningBets: Bet[] = [];
   const losingBets: Bet[] = [];
   const tieBets: Bet[] = [];
   let winningMove:MOVE|undefined;
+  let winningAmount = 0
+  let betAmount = 0
+  const winningRate = getWinningRate(bets)
   for (const bet of bets) {
     const result = playRPS(bet.move, aiMove);
+    betAmount +=bet.amount
     if (result === RESULT.WIN) {
       winningBets.push(bet);
       winningMove = bet.move
+      winningAmount = bet.amount * winningRate
     } else if (result === RESULT.TIE) {
       if (bets.length === 1) {
         tieBets.push(bet);
+        betAmount -= bet.amount
       } else {
         losingBets.push(bet);
       }
@@ -86,5 +103,5 @@ if(!winningMove){
 }
     }
   }
-  return { winningBets, losingBets, tieBets ,winningMove};
+  return { winningBets, losingBets, tieBets ,winningMove,winningAmount:winningAmount - betAmount};
 };

@@ -2,10 +2,11 @@ import { useLastGame } from "../hooks/game/selectors";
 
 const GameResult = () => {
   const lastGame = useLastGame();
-  if(!lastGame) return<></>
-  const { winningBets, losingBets, tieBets } = lastGame;
+  if (!lastGame) return <></>;
+  const { winningBets, losingBets, tieBets, winningAmount } = lastGame;
+
   if (winningBets.length) {
-    const { move, amount: winAmount } = winningBets[0] || {};
+    const { move } = winningBets[0] || {};
     return (
       <div
         tabIndex={0}
@@ -13,7 +14,7 @@ const GameResult = () => {
       >
         <div className="text-4xl font-bold text-green-300">{move} WON</div>
         <div className="text-primary text-2xl">
-          YOU WIN <span className="text-white">{winAmount}</span>{" "}
+          YOU WIN <span className="text-white">{winningAmount}</span>{" "}
         </div>
       </div>
     );
